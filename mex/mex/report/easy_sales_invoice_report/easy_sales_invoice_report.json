@@ -1,0 +1,29 @@
+{
+ "add_total_row": 1,
+ "columns": [],
+ "creation": "2024-12-21 02:44:42.212789",
+ "disable_prepared_report": 1,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "javascript": "frappe.query_reports[\"Easy Sales Invoice Report\"] = {\r\n\t\"filters\": [\r\n\t\t{\r\n\t\t\t\"fieldname\": \"from_date\",\r\n\t\t\t\"label\": __(\"From Date\"),\r\n\t\t\t\"fieldtype\": \"Date\",\r\n\t\t\t\"default\": frappe.datetime.add_months(frappe.datetime.get_today(), -1),\r\n\t\t\t\"reqd\": 1,\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"fieldname\": \"to_date\",\r\n\t\t\t\"label\": __(\"To Date\"),\r\n\t\t\t\"fieldtype\": \"Date\",\r\n\t\t\t\"default\": frappe.datetime.get_today(),\r\n\t\t\t\"reqd\": 1,\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"fieldname\": \"customer\",\r\n\t\t\t\"label\": __(\"Customer\"),\r\n\t\t\t\"fieldtype\": \"Link\",\r\n\t\t\t\"options\": \"Customer\"\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"fieldname\": \"supplier\",\r\n\t\t\t\"label\": __(\"Supplier\"),\r\n\t\t\t\"fieldtype\": \"Link\",\r\n\t\t\t\"options\": \"Supplier\"\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"fieldname\": \"company\",\r\n\t\t\t\"label\": __(\"Company\"),\r\n\t\t\t\"fieldtype\": \"Link\",\r\n\t\t\t\"options\": \"Company\",\r\n\t\t\t\"default\": frappe.defaults.get_user_default(\"Company\")\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"fieldname\": \"status\",\r\n\t\t\t\"label\": __(\"Status\"),\r\n\t\t\t\"fieldtype\": \"Select\",\r\n\t\t\t\"options\": [\"\",\"Draft\",\"Submitted\"]\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"fieldname\": \"is_return\",\r\n\t\t\t\"label\": __(\"Is Return\"),\r\n\t\t\t\"fieldtype\": \"Check\",\r\n\t\t\t\"default\": 0\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"label\": __(\"Group By\"),\r\n\t\t\t\"fieldname\": \"group_by\",\r\n\t\t\t\"fieldtype\": \"Select\",\r\n\t\t\t\"options\": [\"\", \"Customer\", \"Supplier\"]\r\n\t\t}\r\n\t],\r\n\t\"formatter\": function(value, row, column, data, default_formatter) {\r\n\t\tvalue = default_formatter(value, row, column, data);\r\n\t\tif (data && data.bold) {\r\n\t\t\tvalue = value.bold();\r\n\t\t}\r\n\t\treturn value;\r\n\t}\r\n};\r\n\r\n//# sourceURL=easy_sales_invoice_report.js",
+ "modified": "2024-12-21 03:18:11.100249",
+ "modified_by": "Administrator",
+ "module": "MEX",
+ "name": "Easy Sales Invoice Report",
+ "owner": "habeeb@zoserp.com",
+ "prepared_report": 1,
+ "query": "\r\n",
+ "ref_doctype": "Easy Sales Invoice",
+ "report_name": "Easy Sales Invoice Report",
+ "report_script": "import frappe\r\nfrom frappe import _\r\n\r\ndef execute(filters=None):\r\n    # Define the columns for the report\r\n    columns = [\r\n        {\r\n            \"label\": _(\"Invoice Number\"),\r\n            \"fieldname\": \"name\",\r\n            \"fieldtype\": \"Link\",\r\n            \"options\": \"Sales Invoice\",\r\n            \"width\": 150\r\n        },\r\n        {\r\n            \"label\": _(\"Customer\"),\r\n            \"fieldname\": \"customer\",\r\n            \"fieldtype\": \"Link\",\r\n            \"options\": \"Customer\",\r\n            \"width\": 150\r\n        },\r\n        {\r\n            \"label\": _(\"Supplier\"),\r\n            \"fieldname\": \"supplier\",\r\n            \"fieldtype\": \"Link\",\r\n            \"options\": \"Supplier\",\r\n            \"width\": 150\r\n        },\r\n        {\r\n            \"label\": _(\"Total Amount\"),\r\n            \"fieldname\": \"total_amount\",\r\n            \"fieldtype\": \"Currency\",\r\n            \"width\": 150\r\n        },\r\n        {\r\n            \"label\": _(\"Status\"),\r\n            \"fieldname\": \"status\",\r\n            \"fieldtype\": \"Data\",\r\n            \"width\": 100\r\n        },\r\n        {\r\n            \"label\": _(\"Date\"),\r\n            \"fieldname\": \"posting_date\",\r\n            \"fieldtype\": \"Date\",\r\n            \"width\": 120\r\n        }\r\n    ]\r\n    \r\n    # Set default filters if not provided\r\n    if not filters:\r\n        filters = {}\r\n\r\n    # Fetch Sales Invoices based on the provided filters\r\n    conditions = \" WHERE si.docstatus = 1\"\r\n    if filters.get(\"from_date\"):\r\n        conditions += f\" AND si.posting_date >= '{filters['from_date']}'\"\r\n    if filters.get(\"to_date\"):\r\n        conditions += f\" AND si.posting_date <= '{filters['to_date']}'\"\r\n    if filters.get(\"customer\"):\r\n        conditions += f\" AND si.customer = '{filters['customer']}'\"\r\n    if filters.get(\"supplier\"):\r\n        conditions += f\" AND si.supplier = '{filters['supplier']}'\"\r\n    if filters.get(\"status\"):\r\n        conditions += f\" AND si.status = '{filters['status']}'\"\r\n    if filters.get(\"is_return\"):\r\n        conditions += f\" AND si.is_return = {filters['is_return']}\"\r\n\r\n    # Query to fetch the data\r\n    query = f\"\"\"\r\n        SELECT\r\n            si.name,\r\n            si.customer,\r\n            si.supplier,\r\n            si.total_amount,\r\n            si.status,\r\n            si.posting_date\r\n        FROM\r\n            `tabSales Invoice` si\r\n        {conditions}\r\n        ORDER BY si.posting_date\r\n    \"\"\"\r\n\r\n    data = frappe.db.sql(query, as_dict=True)\r\n\r\n    # If a \"Group By\" filter is provided, group the results\r\n    if filters.get(\"group_by\"):\r\n        group_by = filters[\"group_by\"]\r\n        data = group_data(data, group_by)\r\n    \r\n    return columns, data\r\n\r\n\r\ndef group_data(data, group_by):\r\n    grouped_data = {}\r\n    \r\n    for row in data:\r\n        key = row.get(group_by)\r\n        if key not in grouped_data:\r\n            grouped_data[key] = []\r\n        grouped_data[key].append(row)\r\n    \r\n    # Flatten the grouped data\r\n    result = []\r\n    for group, rows in grouped_data.items():\r\n        for row in rows:\r\n            result.append(row)\r\n    \r\n    return result\r\n",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "System Manager"
+  }
+ ]
+}

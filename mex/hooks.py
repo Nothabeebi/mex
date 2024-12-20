@@ -213,3 +213,9 @@ app_license = "MIT"
 # auth_hooks = [
 # 	"mex.auth.validate"
 # ]
+doc_events = {
+    "Easy Sales Invoice": {
+        "on_submit": "mex.easy_sales_invoice.on_submit_easy_sales_invoice"
+    }
+}
+
