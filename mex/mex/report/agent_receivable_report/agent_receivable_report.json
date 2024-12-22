@@ -1,0 +1,30 @@
+{
+ "add_total_row": 1,
+ "columns": [],
+ "creation": "2024-12-21 14:57:41.888905",
+ "disable_prepared_report": 1,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "modified": "2024-12-22 12:11:33.799029",
+ "modified_by": "Administrator",
+ "module": "MEX",
+ "name": "Agent Receivable Report",
+ "owner": "Administrator",
+ "prepared_report": 1,
+ "query": "SELECT\r\n    si.name AS \"Invoice No:Link/Sales Invoice:120\",\r\n    si.posting_date AS \"Posting Date:Date:100\",\r\n    si.due_date AS \"Due Date:Date:100\",\r\n    si.customer AS \"Customer:Link/Customer:200\",\r\n    si.customer_name AS \"Customer Name::200\",\r\n    si.grand_total AS \"Invoice Amount:Currency:120\",\r\n    si.outstanding_amount AS \"Outstanding Amount:Currency:120\",\r\n    IFNULL(SUM(per.allocated_amount), 0) AS \"Paid Amount:Currency:120\",\r\n    (si.outstanding_amount - IFNULL(SUM(per.allocated_amount), 0)) AS \"Net Outstanding:Currency:120\",\r\n    CASE\r\n        WHEN si.outstanding_amount > 0 AND si.due_date < CURDATE() THEN \"Overdue\"\r\n        ELSE \"Not Overdue\"\r\n    END AS \"Status::120\"\r\nFROM\r\n    `tabSales Invoice` si\r\nLEFT JOIN\r\n    `tabPayment Entry Reference` per ON per.reference_name = si.name\r\nLEFT JOIN\r\n    `tabPayment Entry` pe ON pe.name = per.parent AND pe.docstatus = 1\r\nWHERE\r\n    si.docstatus = 1\r\nGROUP BY\r\n    si.name\r\nORDER BY\r\n    si.posting_date DESC, si.customer ASC;\r\n",
+ "ref_doctype": "Sales Invoice",
+ "report_name": "Agent Receivable Report",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "Accounts Manager"
+  },
+  {
+   "role": "Accounts User"
+  }
+ ]
+}

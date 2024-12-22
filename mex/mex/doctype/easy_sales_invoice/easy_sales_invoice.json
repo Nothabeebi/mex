@@ -10,25 +10,25 @@
  "field_order": [
   "title",
   "naming_series",
+  "company",
   "date",
   "column_break_sibvk",
   "time",
+  "customer_remark",
   "section_break_k8rdp",
   "supplier",
-  "column_break_q3cx7",
+  "customer",
+  "quantity",
   "purchase_rate",
   "total_buying_amount",
-  "section_break_8h5va",
-  "customer",
-  "column_break_ypztk",
   "selling_rate",
-  "quantity",
   "total_selling_amount",
   "section_break_a1rbv",
-  "customer_remark",
   "due_date",
   "amended_from",
-  "item"
+  "item",
+  "sales_invoice_link",
+  "purchase_invoice_link"
  ],
  "fields": [
   {
@@ -77,10 +77,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "column_break_q3cx7",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "purchase_rate",
    "fieldtype": "Currency",
    "label": "Purchase Price",
@@ -94,21 +90,12 @@
    "read_only": 1
   },
   {
-   "fieldname": "section_break_8h5va",
-   "fieldtype": "Section Break",
-   "label": "Agent"
-  },
-  {
    "fieldname": "customer",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Agent",
    "options": "Customer",
    "reqd": 1
-  },
-  {
-   "fieldname": "column_break_ypztk",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "selling_rate",
@@ -138,7 +125,7 @@
   {
    "fieldname": "customer_remark",
    "fieldtype": "Small Text",
-   "label": "Customer Remark"
+   "label": "Customer Name"
   },
   {
    "default": "Today",
@@ -166,12 +153,41 @@
    "label": "Item",
    "options": "Item",
    "read_only": 1
+  },
+  {
+   "default": "Zaithoon Investment",
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "sales_invoice_link",
+   "fieldtype": "Link",
+   "label": "Sales Invoice Reference",
+   "options": "Sales Invoice",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "purchase_invoice_link",
+   "fieldtype": "Link",
+   "label": "Purchase Invoice Reference",
+   "options": "Purchase Invoice",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2024-12-21 03:39:47.013904",
+ "links": [
+  {
+   "link_doctype": "Purchase Invoice",
+   "link_fieldname": "name"
+  }
+ ],
+ "modified": "2024-12-21 16:09:28.236220",
  "modified_by": "Administrator",
  "module": "MEX",
  "name": "Easy Sales Invoice",
