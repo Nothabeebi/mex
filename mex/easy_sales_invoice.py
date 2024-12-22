@@ -10,6 +10,7 @@ def on_submit_easy_sales_invoice(doc, method):
         "doctype": "Sales Invoice",
         "customer": doc.customer,
         "posting_date": doc.date,
+        "remarks": doc.customer_remark,    
         "due_date": due_date,
         "items": [
             {
@@ -28,6 +29,7 @@ def on_submit_easy_sales_invoice(doc, method):
         "doctype": "Purchase Invoice",
         "supplier": doc.supplier,
         "posting_date": doc.date,
+        "remarks": doc.customer_remark,    
         "due_date": due_date,
         "items": [
             {
@@ -40,5 +42,4 @@ def on_submit_easy_sales_invoice(doc, method):
     })
     purchase_invoice.insert(ignore_permissions=True)
     purchase_invoice.submit()
-
 

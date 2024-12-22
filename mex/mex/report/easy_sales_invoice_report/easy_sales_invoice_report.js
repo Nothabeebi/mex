@@ -16,7 +16,7 @@ frappe.query_reports["Easy Sales Invoice Report"] = {
 		},
 		{
 			"fieldname": "customer",
-			"label": __("Customer"),
+			"label": __("Agent"),
 			"fieldtype": "Link",
 			"options": "Customer"
 		},

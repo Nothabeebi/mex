@@ -4,25 +4,25 @@ from frappe import _
 def execute(filters=None):
     # Define the columns for the report
     columns = [
-        {
-            "label": _("Invoice Number"),
-            "fieldname": "title",
-            "fieldtype": "Link",
-            "options": "Easy Sales Invoice",
-            "width": 150
+    	{
+            "label": _("Date"),
+            "fieldname": "date",
+            "fieldtype": "Date",
+            "width": 120
         },
-        {
-            "label": _("Customer"),
-            "fieldname": "customer",
-            "fieldtype": "Link",
+    	{
+            "label": _("Customer Name"),
+            "fieldname": "customer_remark",
+            "fieldtype": "Small Text",
             "options": "Customer",
             "width": 150
         },
+        
         {
-            "label": _("Supplier"),
-            "fieldname": "supplier",
+            "label": _("Agent"),
+            "fieldname": "customer",
             "fieldtype": "Link",
-            "options": "Supplier",
+            "options": "Customer",
             "width": 150
         },
         {
@@ -46,15 +46,11 @@ def execute(filters=None):
         {
             "label": _("Status"),
             "fieldname": "docstatus",
-            "fieldtype": "Data",
+            "fieldtype": "Link",
+        	"options": "docstatus",
             "width": 100
-        },
-        {
-            "label": _("Date"),
-            "fieldname": "date",
-            "fieldtype": "Date",
-            "width": 120
         }
+        
     ]
     
     # Set default filters if not provided
@@ -73,13 +69,14 @@ def execute(filters=None):
     # Fetch data only from the Easy Sales Invoice table
     query = f"""
         SELECT
-            esi.title,
+        	esi.date,
+            esi.customer_remark,
             esi.customer,
             esi.supplier,
             esi.total_buying_amount,
             esi.total_selling_amount,
-            esi.quantity,
-            esi.date
+            esi.quantity
+           
         FROM
             `tabEasy Sales Invoice` esi
         {conditions}
