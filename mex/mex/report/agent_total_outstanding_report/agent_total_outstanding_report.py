@@ -1,28 +1,38 @@
-import frappe
-from frappe.utils import flt, nowdate
+import frappe  # Add this import
+
+from frappe.utils import flt  # Ensure utility functions are imported if used
 
 def execute(filters=None):
+    """
+    Entry point for the report. Returns the columns and data.
+    """
     columns = get_columns()
     data = get_data(filters)
     return columns, data
 
 def get_columns():
+    """
+    Defines the columns for the report.
+    """
     return [
-        {"fieldname": "customer", "label": "Agent", "fieldtype": "Link", "options": "Customer", "width": 200},
-        {"fieldname": "total_outstanding", "label": "Total Invoice Amount", "fieldtype": "Currency", "width": 150},
-        {"fieldname": "paid_amount", "label": "Total Paid", "fieldtype": "Currency", "width": 150},
-        {"fieldname": "due_amount", "label": "Amount Due", "fieldtype": "Currency", "width": 150},
+        {"label": "Agent", "fieldname": "customer", "fieldtype": "Link", "options": "Customer", "width": 200},
+        {"label": "Total Outstanding", "fieldname": "total_outstanding", "fieldtype": "Currency", "width": 150},
+        {"label": "Paid Amount", "fieldname": "paid_amount", "fieldtype": "Currency", "width": 150},
+        {"label": "Due Amount", "fieldname": "due_amount", "fieldtype": "Currency", "width": 150},
     ]
 
 def get_data(filters):
+    """
+    Fetches and processes the data for the report based on filters.
+    """
     data = []
     conditions = []
     query_params = {}
 
-    # Add customer filter
-    if filters.get("customer"):
-        conditions.append("si.customer = %(customer)s")
-        query_params["customer"] = filters["customer"]
+    # Add agent filter
+    if filters.get("agent"):
+        conditions.append("si.customer = %(agent)s")
+        query_params["agent"] = filters["agent"]
 
     # Add date filters
     if filters.get("from_date"):
@@ -38,8 +48,12 @@ def get_data(filters):
     # Handle the WHERE clause based on conditions
     condition_string = " AND ".join(conditions)
 
-    # Now build the final SQL query string
-    customers = frappe.db.sql(f"""
+    # Debugging condition and params
+    print("Condition String:", condition_string)
+    print("Query Params:", query_params)
+
+    # Build the final SQL query
+    query = f"""
         SELECT
             si.customer,
             SUM(si.outstanding_amount) AS total_outstanding,
@@ -56,7 +70,11 @@ def get_data(filters):
             si.customer
         ORDER BY
             total_outstanding DESC
-    """, query_params, as_dict=True)
+    """
+
+    print("Final Query:", query)
+
+    customers = frappe.db.sql(query, query_params, as_dict=True, debug=True)
 
     for customer in customers:
         data.append({
