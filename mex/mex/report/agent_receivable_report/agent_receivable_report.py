@@ -10,15 +10,15 @@ def get_columns():
     return [
         {"fieldname": "invoice_no", "label": "Invoice No", "fieldtype": "Link", "options": "Sales Invoice", "width": 120},
         {"fieldname": "posting_date", "label": "Posting Date", "fieldtype": "Date", "width": 100},
-        {"fieldname": "remarks", "label": "Customer Name", "fieldtype": "Data", "width": 200},
-        {"fieldname": "customer", "label": "Agent", "fieldtype": "Link", "options": "Customer", "width": 200},
-        {"fieldname": "quantity", "label": "Quantity", "fieldtype": "Int", "width": 100},
-        {"fieldname": "selling_price", "label": "Selling Price", "fieldtype": "Currency", "width": 120},
-        {"fieldname": "invoice_amount", "label": "Invoice Amount", "fieldtype": "Currency", "width": 120},
-        {"fieldname": "paid_amount", "label": "Paid Amount", "fieldtype": "Currency", "width": 120},
-        {"fieldname": "net_outstanding", "label": "Net Outstanding", "fieldtype": "Currency", "width": 120},
-        {"fieldname": "status", "label": "Status", "fieldtype": "Data", "width": 120},
-        {"fieldname": "overdue_days", "label": "Overdue Days", "fieldtype": "Int", "width": 100},
+        {"fieldname": "remarks", "label": "Customer Name", "fieldtype": "Data", "width": 120},
+        {"fieldname": "customer", "label": "Agent", "fieldtype": "Link", "options": "Customer", "width": 120},
+        {"fieldname": "quantity", "label": "Quantity", "fieldtype": "Int", "width": 80},
+        {"fieldname": "selling_price", "label": "Selling Price", "fieldtype": "Currency", "width": 80},
+        {"fieldname": "invoice_amount", "label": "Invoice Amount", "fieldtype": "Currency", "width": 100},
+        {"fieldname": "paid_amount", "label": "Paid Amount", "fieldtype": "Currency", "width": 100},
+        {"fieldname": "net_outstanding", "label": "Net Outstanding", "fieldtype": "Currency", "width": 100},
+        {"fieldname": "status", "label": "Status", "fieldtype": "Data", "width": 100},
+        {"fieldname": "overdue_days", "label": "Overdue Days", "fieldtype": "Int", "width": 50},
     ]
 
 def get_data(filters):
@@ -54,31 +54,31 @@ def get_data(filters):
             si.posting_date,
             si.customer,
             si.grand_total AS invoice_amount,
-            IFNULL(SUM(per.allocated_amount), 0) AS paid_amount,
+            si.remarks,  -- Fetching remarks from the Sales Invoice table (if exists)
+            sii.qty AS quantity,
+            sii.rate AS selling_price,  -- Fetching the selling price or rate
+            IFNULL(SUM(per.allocated_amount), 0) AS paid_amount,  -- Sum of allocated amounts from payment entries
             (si.grand_total - IFNULL(SUM(per.allocated_amount), 0)) AS net_outstanding,
             CASE
-                WHEN si.outstanding_amount = 0 THEN "Paid"
-                WHEN si.outstanding_amount > 0 AND si.due_date < CURDATE() THEN "Overdue"
+                WHEN (si.grand_total - IFNULL(SUM(per.allocated_amount), 0)) = 0 THEN "Paid"
+                WHEN si.due_date < CURDATE() AND (si.grand_total - IFNULL(SUM(per.allocated_amount), 0)) > 0 THEN "Overdue"
                 ELSE "Unpaid"
             END AS status,
             CASE
-                WHEN si.outstanding_amount > 0 AND si.due_date < CURDATE() THEN DATEDIFF(CURDATE(), si.due_date)
+                WHEN si.due_date < CURDATE() AND (si.grand_total - IFNULL(SUM(per.allocated_amount), 0)) > 0 THEN DATEDIFF(CURDATE(), si.due_date)
                 ELSE 0
-            END AS overdue_days,
-            si.remarks,  -- Fetching remarks from the Sales Invoice table (if exists)
-            sii.qty AS quantity,
-            sii.rate AS selling_price  -- Fetching the selling price or rate
+            END AS overdue_days
         FROM
             `tabSales Invoice` si
         LEFT JOIN
             `tabPayment Entry Reference` per ON per.reference_name = si.name
         LEFT JOIN
-            `tabPayment Entry` pe ON pe.name = per.parent AND pe.docstatus = 1
+            `tabPayment Entry` pe ON pe.name = per.parent AND pe.docstatus = 1  -- Only include submitted payment entries
         LEFT JOIN
             `tabSales Invoice Item` sii ON sii.parent = si.name
         {condition_string}
         GROUP BY
-            si.name
+            si.name, si.posting_date, si.customer, sii.qty, sii.rate, si.due_date
         ORDER BY
             si.posting_date DESC, si.customer ASC
     """, query_params, as_dict=True)
@@ -87,10 +87,10 @@ def get_data(filters):
         data.append({
             "invoice_no": inv.invoice_no,
             "posting_date": inv.posting_date,
-            "remarks": inv.remarks,        
+            "remarks": inv.remarks,
             "customer": inv.customer,
             "quantity": inv.quantity,
-            "selling_price": flt(inv.selling_price),      
+            "selling_price": flt(inv.selling_price),
             "invoice_amount": flt(inv.invoice_amount),
             "paid_amount": flt(inv.paid_amount),
             "net_outstanding": flt(inv.net_outstanding),

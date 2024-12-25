@@ -1,0 +1,30 @@
+{
+ "add_total_row": 1,
+ "columns": [],
+ "creation": "2024-12-24 19:27:52.881451",
+ "disable_prepared_report": 0,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": "Zaithoon Investment",
+ "modified": "2024-12-24 19:27:52.881451",
+ "modified_by": "Administrator",
+ "module": "MEX",
+ "name": "Agent Ledger Summary",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Easy Sales Invoice",
+ "report_name": "Agent Ledger Summary",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "Accounts Manager"
+  },
+  {
+   "role": "Accounts User"
+  }
+ ]
+}
