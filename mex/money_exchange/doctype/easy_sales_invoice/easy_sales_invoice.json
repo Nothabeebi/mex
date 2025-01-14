@@ -43,6 +43,14 @@
    "options": "ES-.YY.-.MM.-.####"
   },
   {
+   "default": "Zaithoon Investment",
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "read_only": 1
+  },
+  {
    "default": "Today",
    "fieldname": "date",
    "fieldtype": "Date",
@@ -61,6 +69,26 @@
    "reqd": 1
   },
   {
+   "fieldname": "customer_remark",
+   "fieldtype": "Small Text",
+   "label": "Customer Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sales_invoice",
+   "fieldtype": "Link",
+   "label": "Sales Invoice",
+   "options": "Sales Invoice",
+   "read_only": 1
+  },
+  {
+   "fieldname": "purchase_invoice",
+   "fieldtype": "Link",
+   "label": "Purchase Invoice",
+   "options": "Purchase Invoice",
+   "read_only": 1
+  },
+  {
    "fieldname": "section_break_k8rdp",
    "fieldtype": "Section Break",
    "label": "Supplier"
@@ -77,6 +105,21 @@
    "reqd": 1
   },
   {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Agent",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Quantity",
+   "reqd": 1
+  },
+  {
    "fieldname": "purchase_rate",
    "fieldtype": "Currency",
    "label": "Purchase Price",
@@ -90,24 +133,9 @@
    "read_only": 1
   },
   {
-   "fieldname": "customer",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Agent",
-   "options": "Customer",
-   "reqd": 1
-  },
-  {
    "fieldname": "selling_rate",
    "fieldtype": "Currency",
    "label": "Selling Price",
-   "reqd": 1
-  },
-  {
-   "fieldname": "quantity",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "label": "Quantity",
    "reqd": 1
   },
   {
@@ -121,12 +149,6 @@
    "fieldname": "section_break_a1rbv",
    "fieldtype": "Section Break",
    "label": "Remark"
-  },
-  {
-   "fieldname": "customer_remark",
-   "fieldtype": "Small Text",
-   "label": "Customer Name",
-   "reqd": 1
   },
   {
    "default": "Today",
@@ -153,28 +175,6 @@
    "label": "Item",
    "options": "Item",
    "read_only": 1
-  },
-  {
-   "default": "Zaithoon Investment",
-   "fieldname": "company",
-   "fieldtype": "Link",
-   "label": "Company",
-   "options": "Company",
-   "read_only": 1
-  },
-  {
-   "fieldname": "sales_invoice",
-   "fieldtype": "Link",
-   "label": "Sales Invoice",
-   "options": "Sales Invoice",
-   "read_only": 1
-  },
-  {
-   "fieldname": "purchase_invoice",
-   "fieldtype": "Link",
-   "label": "Purchase Invoice",
-   "options": "Purchase Invoice",
-   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
@@ -185,9 +185,9 @@
    "link_fieldname": "name"
   }
  ],
- "modified": "2025-01-12 14:59:11.174131",
+ "modified": "2025-01-13 21:34:15.533169",
  "modified_by": "Administrator",
- "module": "MEX",
+ "module": "Money Exchange",
  "name": "Easy Sales Invoice",
  "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",

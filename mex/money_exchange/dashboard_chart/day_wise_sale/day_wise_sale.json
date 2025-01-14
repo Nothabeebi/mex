@@ -1,0 +1,32 @@
+{
+ "chart_name": "Day Wise Sale",
+ "chart_type": "Report",
+ "creation": "2025-01-13 21:37:22.422617",
+ "custom_options": "{\"x_field\": \"posting_date\", \"chart_type\": \"Bar\", \"y_axis_fields\": [{\"idx\": 1, \"__islocal\": true, \"y_field\": \"invoice_amount\", \"name\": \"row 1\"}], \"y_fields\": [\"invoice_amount\"], \"colors\": [null]}",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "filters_json": "{\"from_date\":\"2024-12-13\",\"to_date\":\"2025-01-13\"}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2025-01-13 21:37:22.471998",
+ "modified_by": "Administrator",
+ "module": "Money Exchange",
+ "name": "Day Wise Sale",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Agent Receivable Report",
+ "roles": [],
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "x_field": "posting_date",
+ "y_axis": [
+  {
+   "y_field": "invoice_amount"
+  }
+ ]
+}

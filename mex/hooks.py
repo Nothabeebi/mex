@@ -215,7 +215,14 @@ app_license = "MIT"
 # ]
 doc_events = {
     "Easy Sales Invoice": {
-        "on_submit": "mex.easy_sales_invoice.on_submit_easy_sales_invoice"
+        "on_submit": "mex.easy_sales_invoice.on_submit_easy_sales_invoice",
+        "on_cancel": "mex.easy_sales_invoice.on_cancel_easy_sales_invoice"
     }
 }
 
+jenv = {
+    "methods": [
+        "gen_barcode",
+        "gen_qrcode"
+    ]
+}

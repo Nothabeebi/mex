@@ -1,0 +1,28 @@
+{
+ "cards": [
+  {
+   "card": "Sum of Invoice_amount"
+  }
+ ],
+ "charts": [
+  {
+   "width": "Half"
+  },
+  {
+   "chart": "Daily Sales",
+   "width": "Half"
+  }
+ ],
+ "creation": "2025-01-13 21:32:44.986303",
+ "dashboard_name": "Money Exchange",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 0,
+ "is_default": 0,
+ "is_standard": 1,
+ "modified": "2025-01-13 21:41:05.510074",
+ "modified_by": "Administrator",
+ "module": "Money Exchange",
+ "name": "Money Exchange",
+ "owner": "Administrator"
+}
